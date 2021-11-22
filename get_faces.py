@@ -18,8 +18,8 @@ def detect_faces(cascade, test_image):
     
     
 
-def faces_from_video(video_path):
-    outdir = os.path.splitext(os.path.basename(video_path))[0]+'_images'
+def faces_from_video(video_path, outdir):
+    outdir = os.path.join(outdir, os.path.splitext(os.path.basename(video_path))[0]+'_images')
     os.mkdir(outdir)
     print('Creating output folder with name "{}".'.format(outdir))
     skipdir = outdir + "_SKIPPED"
@@ -52,20 +52,35 @@ def faces_from_video(video_path):
     
     
     
-def faces_from_folder(folder_path):
-    for filename in os.listdir(folder_path):
+def faces_from_dir(dir_path, outdir):
+    for filename in os.listdir(dir_path):
         if filename.endswith(".mp4"):
-            path = folder_path + "/" + filename
-            faces_from_video(path)
+            path = os.path.join(dir_path, filename)
+            faces_from_video(path, outdir)
             continue
         else:
             continue
-    
+            
+            
+def nested_dirs(dir_path, outdir):
+    for directory in os.listdir(dir_path):
+        path = dir_path + directory
+        if os.path.isdir(path):
+            if not directory.startswith('.'):
+                newout = os.path.join(outdir, os.path.splitext(os.path.basename(path))[0]+'_images')
+                os.mkdir(newout)
+                faces_from_dir(path, newout)
     
     
 if __name__ == '__main__':
     path = sys.argv[1]
+    outdir = "Images"
+    os.mkdir(outdir)
+    print(outdir)
     if os.path.isdir(path):
-        faces_from_folder(path)
+        if os.path.isdir(path + os.listdir(path)[0]):
+            nested_dirs(path, outdir)
+        else:
+            faces_from_dir(path, outdir)
     else:
-        faces_from_video(path)
+        faces_from_video(path, outdir)
