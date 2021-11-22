@@ -21,7 +21,7 @@ def detect_faces(cascade, test_image):
 def faces_from_video(video_path, outdir):
     outdir = os.path.join(outdir, os.path.splitext(os.path.basename(video_path))[0]+'_images')
     os.mkdir(outdir)
-    print('Creating output folder with name "{}".'.format(outdir))
+    print('Creating output folder with path "{}".'.format(outdir))
     skipdir = outdir + "_SKIPPED"
 
     haar_face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
