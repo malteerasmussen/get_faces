@@ -76,7 +76,6 @@ if __name__ == '__main__':
     path = sys.argv[1]
     outdir = "Images"
     os.mkdir(outdir)
-    print(outdir)
     if os.path.isdir(path):
         if os.path.isdir(path + os.listdir(path)[0]):
             nested_dirs(path, outdir)
